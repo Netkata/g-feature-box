@@ -1,6 +1,6 @@
 {
   "name": "@frontkom/g-feature-box",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A composition block for Gutenberg Cloud",
   "private": false,
   "main": "build/index.js",
