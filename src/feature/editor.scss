@@ -1,6 +1,18 @@
-
-// The class name needs to match the names of the category and block
-.wp-block-cloudblocks-card {
+.wp-block-cloudblocks-feature-box {
   max-width: 350px;
   background: none;
+}
+
+.wp-block-cloudblocks-feature-box__image {
+    position: relative;
+    width: 100%;
+    height: calc( 350px * 9 / 16 );
+    background-size: cover;
+    display: block;
+
+    .wp-block-cloudblocks-feature-box__image-button {
+        position: absolute;
+        top: calc( 50% - 18px );
+        left: calc( 50% - 18px );
+    }
 }

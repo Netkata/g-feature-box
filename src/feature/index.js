@@ -9,7 +9,7 @@ import { element, i18n, components, editor, data } from 'wp';
  */
 import './style.scss';
 import './editor.scss';
-import defaultImage from './card-16-9.png';
+import defaultImage from './placeholder-16-9.png';
 
 const { Fragment } = element;
 const { __ } = i18n;
@@ -74,7 +74,7 @@ const BLOCK_ATTRIBUTES = {
   },
   image: {
     type: 'string',
-    default: defaultImage,
+    default: '',
   },
   imageAlt: {
     type: 'string',
@@ -88,11 +88,11 @@ const BLOCK_ATTRIBUTES = {
 };
 
 const BackgroundImage = ({ style }) => (
-  <div className="background-image" style={style} />
+  <div className="wp-block-cloudblocks-feature-box__background-image" style={style} />
 );
 
 const BackgroundColor = ({ style }) => (
-  <div className="background-color" style={style} />
+  <div className="wp-block-cloudblocks-feature-box__background-color" style={style} />
 );
 
 const TEMPLATE = [['core/paragraph', { placeholder: __('Short description') }]];
@@ -114,12 +114,12 @@ const bgSizeOptions = [
   { label: __('Contain'), value: 'contain' },
 ];
 
-export const name = 'card';
+export const name = 'feature-box';
 
 export const settings = {
   title: __('Feature Box'),
 
-  description: __('A custom block for Gutenberg Cloud'),
+  description: __('Feature Box in which you can add short post content or feature article'),
 
   icon: 'cover-image',
 
@@ -207,32 +207,59 @@ export const settings = {
       setAttributes({ alignment: updatedAlignment });
     }
 
-    const classes = [className, 'card'];
+    const classes = [className];
     if (url) {
-      classes.push('card--arrow');
+      classes.push('wp-block-cloudblocks-feature-box--arrow');
     }
+
+    let inlineStyles = {
+    	background: "url(" + defaultImage + ")",
+    };
 
     return (
       <Fragment>
         <div className={classes.join(' ')} style={styles}>
         {backgroundImage && <BackgroundImage style={backgroundImgStyle} />}
         {backgroundColor && <BackgroundColor style={backgroundColorStyle} />}
+          {!imageId && (
+            <a className="wp-block-cloudblocks-feature-box__image wp-block-cloudblocks-feature-box__image--placeholder" style={inlineStyles}>
+              <MediaUpload
+                type="image"
+                onSelect={onSelectImage}
+                value={imageId}
+                render={({ open }) => (
+                  <IconButton
+                    className="wp-block-cloudblocks-feature-box__image-button"
+                    label={__('Image')}
+                    icon="format-image"
+                    onClick={open}
+                  />
+                )}
+              />
+            </a>
+          )}
           {image && (
-            <figure className="card__img-wrapper">
-              <img src={image} alt={imageAlt} />
+            <figure className="wp-block-cloudblocks-feature-box__image">
+              <img className="wp-block-cloudblocks-feature-box__image-item" src={image} alt={imageAlt} />
+              <IconButton
+                className="wp-block-cloudblocks-feature-box__image-button"
+                label={__('Remove Image')}
+                icon="trash"
+                onClick={onRemoveImage}
+              />
             </figure>
           )}
           <RichText
-            placeholder={__('Card title')}
+            placeholder={__('Title')}
             tagName={tagName}
-            className="card__title"
+            className="wp-block-cloudblocks-feature-box__title"
             value={content}
             isSelected={false}
             keepPlaceholderOnFocus={true}
             onChange={content => setAttributes({ content })}
           />
 
-          <div className="card__description">
+          <div className="wp-block-cloudblocks-feature-box__description">
             <InnerBlocks template={TEMPLATE} allowedBlocks={ALLOWED_BLOCKS} />
           </div>
 
@@ -242,26 +269,6 @@ export const settings = {
         </div>
         <BlockControls>
           <Toolbar>
-            <MediaUpload
-              type="image"
-              onSelect={onSelectImage}
-              value={imageId}
-              render={({ open }) => (
-                <IconButton
-                  className="components-toolbar__control"
-                  label={__('Image')}
-                  icon="format-image"
-                  onClick={open}
-                />
-              )}
-            />
-            {image && (
-              <ToolbarButton
-                title={__('Remove image')}
-                icon="trash"
-                onClick={onRemoveImage}
-              />
-            )}
             <MediaUpload
               type="image"
               onSelect={onSelectBgImage}
@@ -369,9 +376,9 @@ export const settings = {
     };
     const tagName = `h${level}`;
 
-    const classes = [className, 'card'];
+    const classes = [className, 'wp-block-cloudblocks-feature-box'];
     if (url) {
-      classes.push('card--arrow');
+      classes.push('wp-block-cloudblocks-feature-box--arrow');
     }
     if (alignment) {
       classes.push(alignment);
@@ -386,7 +393,7 @@ export const settings = {
     }
     if (backgroundImage) {
       backgroundImgStyle.backgroundImage = `url(${backgroundImage})`;
-      classes.push('has-background');
+      classes.push('wp-block-cloudblocks-feature-box--background');
     }
 
     const backgroundColorStyle = {};
@@ -404,18 +411,18 @@ export const settings = {
         {backgroundImage && <BackgroundImage style={backgroundImgStyle} />}
         {backgroundColor && <BackgroundColor style={backgroundColorStyle} />}
         {url && (
-          <a className="card__link" href={url}>
+          <a className="wp-block-cloudblocks-feature-box__link" href={url}>
             {imageId && (
-              <figure className="card__img-wrapper">
+              <figure className="wp-block-cloudblocks-feature-box__image">
                 <img src={image} alt={imageAlt} />
               </figure>
             )}
             <RichText.Content
-              className="card__title"
+              className="wp-block-cloudblocks-feature-box__title"
               value={content}
               tagName={tagName}
             />
-            <div className="card__description">
+            <div className="wp-block-cloudblocks-feature-box__description">
               <InnerBlocks.Content />
             </div>
           </a>
@@ -423,16 +430,16 @@ export const settings = {
         {!url && (
           <Fragment>
             {imageId && (
-              <figure className="card__img-wrapper">
+              <figure className="wp-block-cloudblocks-feature-box__image">
                 <img src={image} alt={imageAlt} />
               </figure>
             )}
             <RichText.Content
-              className="card__title"
+              className="wp-block-cloudblocks-feature-box__title"
               value={content}
               tagName={tagName}
             />
-            <div className="card__description">
+            <div className="wp-block-cloudblocks-feature-box__description">
               <InnerBlocks.Content />
             </div>
           </Fragment>
