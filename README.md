@@ -1,6 +1,7 @@
 # Feature Box
 
 Gutenberg Block.
+
 Feature Box allowed you to create custom short posts or feature content.
 
 ## Installation
@@ -12,12 +13,18 @@ You can get this block through [Cloud Blocks](https://wordpress.org/plugins/clou
 ### Locally
 
 1. Clone this repo into your gutenberg blocks directory
-2. Build it
-> npm install
-> npm run build
+2. Build it 
+    > npm install \
+    npm run-script build 
 3. Install local block in your Cloud Blocks plugin
 
 ## Changelog
+
+### 0.0.5
+Update readme
+
+### 0.0.4
+Add screenshot
 
 ### 0.0.3
 Update readme
