@@ -52,7 +52,7 @@
 			"allowArrowFunctions": true
 		}],
 		"generator-star-spacing": "warn",
-		"indent": [ "warn", 2, {
+		"indent": [ "warn", 4, {
 			"MemberExpression": 0,
 			"SwitchCase": 1
 		}],
@@ -110,8 +110,8 @@
 		"react/display-name": "off",
 		"react/jsx-curly-spacing": "off",
 		"react/jsx-equals-spacing": "error",
-		"react/jsx-indent": [ "warn", 2 ],
-		"react/jsx-indent-props": [ "warn", 2 ],
+		"react/jsx-indent": [ "warn", 4 ],
+		"react/jsx-indent-props": [ "warn", 4 ],
 		"react/jsx-uses-react": "error",
 		"react/jsx-uses-vars": "error",
 		"react/jsx-tag-spacing": "warn",
