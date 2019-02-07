@@ -178,9 +178,6 @@ export const settings = {
         }
 
         const classes = [className];
-        if (url) {
-            classes.push('wp-block-cloudblocks-feature-box--arrow');
-        }
 
         const inlineStyles = {
             background: 'url(' + defaultImage + ')',
@@ -400,10 +397,6 @@ export const settings = {
 
         const classes = [className, 'wp-block-cloudblocks-feature-box'];
 
-        if (url) {
-            classes.push('wp-block-cloudblocks-feature-box--arrow');
-        }
-
         if (alignment) {
             classes.push(alignment);
         }
@@ -436,9 +429,7 @@ export const settings = {
                             <div className="wp-block-cloudblocks-feature-box--background-overlay" style={backgroundColorStyles}></div>
 
                             {!hasBackground && (
-                                <figure className="wp-block-cloudblocks-feature-box__image">
-                                    <img src={backgroundImage} alt={backgroundImageAlt} />
-                                </figure>
+                                <img className="wp-block-cloudblocks-feature-box__image" src={backgroundImage} alt={backgroundImageAlt} />
                             )}
 
                             <RichText.Content

@@ -57,6 +57,10 @@
   .wp-block-cloudblocks-feature-box__link {
     display: block;
     min-height: inherit;
+
+    & > * {
+      color: initial;
+    }
   }
 
   .wp-block-cloudblocks-feature-box__title {
