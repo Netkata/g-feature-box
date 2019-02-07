@@ -58,6 +58,9 @@ const BLOCK_ATTRIBUTES = {
     backgroundImageId: {
         type: 'number',
     },
+    backgroundImageAlt: {
+        type: 'string',
+    },
     backgroundPosition: {
         type: 'string',
         default: 'center',
@@ -81,9 +84,6 @@ const BLOCK_ATTRIBUTES = {
         type: 'string',
         default: '',
     },
-    imageAlt: {
-        type: 'string',
-    },
     imageId: {
         type: 'number',
     },
@@ -93,7 +93,7 @@ const BLOCK_ATTRIBUTES = {
     hasBackground: {
         type: 'boolean',
         default: true,
-    }
+    },
 };
 
 const BackgroundImage = ({ style }) => (
@@ -145,15 +145,12 @@ export const settings = {
             content,
             backgroundImage,
             backgroundImageId,
-            backgoundImageAlt,
+            backgroundImageAlt,
             backgroundPosition,
             backgroundSize,
             backgroundColor,
             backgroundColorOpacity,
             backgroundColorDisplay,
-            image,
-            imageAlt,
-            imageId,
             alignment,
             hasBackground,
         } = attributes;
@@ -203,7 +200,7 @@ export const settings = {
 
             imageBlock = (
                 <div className="wp-block-cloudblocks-feature-box__image">
-                    <img src={backgroundImage} alt={backgoundImageAlt} />
+                    <img src={backgroundImage} alt={backgroundImageAlt} />
                 </div>
             );
         }
@@ -382,91 +379,101 @@ export const settings = {
 
     save ({ attributes, className }) {
         const {
+            level,
+            url,
+            content,
             backgroundImage,
+            backgroundImageAlt,
             backgroundPosition,
             backgroundSize,
             backgroundColor,
             backgroundColorOpacity,
-            image,
-            imageId,
-            imageAlt,
-            level,
-            content,
-            url,
+            backgroundColorDisplay,
             alignment,
+            hasBackground,
         } = attributes;
+
         const styles = {
             textAlign: alignment,
         };
         const tagName = `h${level}`;
 
         const classes = [className, 'wp-block-cloudblocks-feature-box'];
+
         if (url) {
             classes.push('wp-block-cloudblocks-feature-box--arrow');
         }
+
         if (alignment) {
             classes.push(alignment);
         }
 
-        const backgroundImgStyle = {};
-        if (backgroundPosition) {
-            backgroundImgStyle.backgroundPosition = backgroundPosition;
-        }
-        if (backgroundSize) {
-            backgroundImgStyle.backgroundSize = backgroundSize;
-        }
-        if (backgroundImage) {
-            backgroundImgStyle.backgroundImage = `url(${backgroundImage})`;
-            classes.push('wp-block-cloudblocks-feature-box--background');
+        let backgroundImgStyles = {
+            backgroundImage: 'url(' + backgroundImage + ')',
+            backgroundPosition: backgroundPosition,
+            backgroundSize: backgroundSize,
+        };
+
+        let backgroundClass = "wp-block-cloudblocks-feature-box--background";
+        if(!hasBackground) {
+            backgroundImgStyles = {};
+            backgroundClass = "";
         }
 
-        const backgroundColorStyle = {};
-        if (backgroundColor) {
-            backgroundColorStyle.backgroundColor = backgroundColor;
-        }
-        if (backgroundColorOpacity) {
-            backgroundColorStyle.opacity = `${(backgroundColorOpacity * 0.1).toFixed(
+        const backgroundColorStyles = {
+            backgroundColor: backgroundColor,
+            opacity: `${(backgroundColorOpacity * 0.1).toFixed(
                 1
-            )}`;
-        }
+            )}`,
+            display: backgroundColorDisplay,
+        };
 
         return (
             <div className={classes.join(' ')} style={styles}>
-                {backgroundImage && <BackgroundImage style={backgroundImgStyle} />}
-                {backgroundColor && <BackgroundColor style={backgroundColorStyle} />}
                 {url && (
                     <a className="wp-block-cloudblocks-feature-box__link" href={url}>
-                        {imageId && (
-                            <figure className="wp-block-cloudblocks-feature-box__image">
-                                <img src={image} alt={imageAlt} />
-                            </figure>
-                        )}
-                        <RichText.Content
-                            className="wp-block-cloudblocks-feature-box__title"
-                            value={content}
-                            tagName={tagName}
-                        />
-                        <div className="wp-block-cloudblocks-feature-box__description">
-                            <InnerBlocks.Content />
+                        <div className={backgroundClass} style={backgroundImgStyles}>
+                            <div className="wp-block-cloudblocks-feature-box--background-overlay" style={backgroundColorStyles}></div>
+
+                            {!hasBackground && (
+                                <figure className="wp-block-cloudblocks-feature-box__image">
+                                    <img src={backgroundImage} alt={backgroundImageAlt} />
+                                </figure>
+                            )}
+
+                            <RichText.Content
+                                className="wp-block-cloudblocks-feature-box__title"
+                                value={content}
+                                tagName={tagName}
+                            />
+
+                            <div className="wp-block-cloudblocks-feature-box__description">
+                                <InnerBlocks.Content />
+                            </div>
+
                         </div>
                     </a>
                 )}
                 {!url && (
-                    <Fragment>
-                        {imageId && (
+                    <div className={backgroundClass} style={backgroundImgStyles}>
+                        <div className="wp-block-cloudblocks-feature-box--background-overlay" style={backgroundColorStyles}></div>
+
+                        {!hasBackground && (
                             <figure className="wp-block-cloudblocks-feature-box__image">
-                                <img src={image} alt={imageAlt} />
+                                <img src={backgroundImage} alt={backgroundImageAlt} />
                             </figure>
                         )}
+
                         <RichText.Content
                             className="wp-block-cloudblocks-feature-box__title"
                             value={content}
                             tagName={tagName}
                         />
+
                         <div className="wp-block-cloudblocks-feature-box__description">
                             <InnerBlocks.Content />
                         </div>
-                    </Fragment>
+                    </div>
                 )}
             </div>
         );

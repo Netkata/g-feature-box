@@ -42,6 +42,15 @@
     z-index: 1;
 }
 
+.wp-block-cloudblocks-feature-box__image--placeholder {
+    position: relative;
+    width: 100%;
+    height: calc( 350px * 9 / 16 );
+    background-size: cover;
+    display: block;
+    z-index: 0;
+}
+
 .wp-block-cloudblocks-feature-box__image {
     position: relative;
     width: 100%;
