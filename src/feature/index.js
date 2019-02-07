@@ -440,6 +440,10 @@ export const settings = {
 
                             <div className="wp-block-cloudblocks-feature-box__description">
                                 <InnerBlocks.Content />
+
+                                {hasBackground && (
+                                    <p className="wp-block-cloudblocks-feature-box__text-link">{__('Read full story')}</p>
+                                )}
                             </div>
 
                         </div>
