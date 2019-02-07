@@ -19,6 +19,7 @@ const {
     PanelRow,
     SelectControl,
     RangeControl,
+    ToggleControl,
     Toolbar,
     IconButton,
     ToolbarButton,
@@ -72,6 +73,10 @@ const BLOCK_ATTRIBUTES = {
         type: 'number',
         default: 10,
     },
+    backgroundColorDisplay: {
+        type: 'string',
+        default: 'none',
+    },
     image: {
         type: 'string',
         default: '',
@@ -85,6 +90,10 @@ const BLOCK_ATTRIBUTES = {
     alignment: {
         type: 'string',
     },
+    hasBackground: {
+        type: 'boolean',
+        default: true,
+    }
 };
 
 const BackgroundImage = ({ style }) => (
@@ -136,63 +145,27 @@ export const settings = {
             content,
             backgroundImage,
             backgroundImageId,
+            backgoundImageAlt,
             backgroundPosition,
             backgroundSize,
             backgroundColor,
             backgroundColorOpacity,
+            backgroundColorDisplay,
             image,
             imageAlt,
             imageId,
             alignment,
+            hasBackground,
         } = attributes;
         const styles = {
             textAlign: alignment,
         };
         const tagName = `h${level}`;
 
-        const onSelectImage = ({
-            id,
-            alt,
-            sizes: {
-                medium: { url: imgURI },
-            },
-        }) => {
-            setAttributes({ image: imgURI, imageId: id, imageAlt: alt });
-        };
-
-        const onRemoveImage = () => {
-            setAttributes({
-                imageId: '',
-                image: '',
-                imageAlt: '',
-            });
-        };
-
-        const backgroundImgStyle = {};
-        if (backgroundPosition) {
-            backgroundImgStyle.backgroundPosition = backgroundPosition;
-        }
-        if (backgroundSize) {
-            backgroundImgStyle.backgroundSize = backgroundSize;
-        }
-        if (backgroundImage) {
-            backgroundImgStyle.backgroundImage = `url(${backgroundImage})`;
-        }
-
-        const backgroundColorStyle = {};
-        if (backgroundColor) {
-            backgroundColorStyle.backgroundColor = backgroundColor;
-        }
-        if (backgroundColorOpacity) {
-            backgroundColorStyle.opacity = `${(backgroundColorOpacity * 0.1).toFixed(
-                1
-            )}`;
-        }
-
         const onSelectBgImage = ({
             id,
             sizes: {
-                large: { url: imgURI },
+                full: { url: imgURI },
             },
         }) => setAttributes({ backgroundImage: imgURI, backgroundImageId: id });
 
@@ -212,25 +185,54 @@ export const settings = {
             classes.push('wp-block-cloudblocks-feature-box--arrow');
         }
 
-        let inlineStyles = {
-            background: "url(" + defaultImage + ")",
+        const inlineStyles = {
+            background: 'url(' + defaultImage + ')',
+        };
+
+        let backgroundImgStyles = {
+            backgroundImage: 'url(' + backgroundImage + ')',
+            backgroundPosition: backgroundPosition,
+            backgroundSize: backgroundSize,
+        };
+
+        let imageBlock;
+        let backgroundClass = "wp-block-cloudblocks-feature-box--background";
+        if(!hasBackground) {
+            backgroundImgStyles = {};
+            backgroundClass = "";
+
+            imageBlock = (
+                <div className="wp-block-cloudblocks-feature-box__image">
+                    <img src={backgroundImage} alt={backgoundImageAlt} />
+                </div>
+            );
+        }
+
+        if(backgroundColor) {
+            setAttributes({ backgroundColorDisplay: 'block' });
+        }
+
+        const backgroundColorStyles = {
+            backgroundColor: backgroundColor,
+            opacity: `${(backgroundColorOpacity * 0.1).toFixed(
+                1
+            )}`,
+            display: backgroundColorDisplay,
         };
 
         return (
             <Fragment>
                 <div className={classes.join(' ')} style={styles}>
-                    {backgroundImage && <BackgroundImage style={backgroundImgStyle} />}
-                    {backgroundColor && <BackgroundColor style={backgroundColorStyle} />}
-                    {!imageId && (
+                    {!backgroundImageId && (
                         <a className="wp-block-cloudblocks-feature-box__image wp-block-cloudblocks-feature-box__image--placeholder" style={inlineStyles}>
                             <MediaUpload
                                 type="image"
-                                onSelect={onSelectImage}
-                                value={imageId}
+                                onSelect={onSelectBgImage}
+                                value={backgroundImageId}
                                 render={({ open }) => (
                                     <IconButton
                                         className="wp-block-cloudblocks-feature-box__image-button"
-                                        label={__('Image')}
+                                        label={__('Add/Edit background image')}
                                         icon="format-image"
                                         onClick={open}
                                     />
@@ -238,30 +240,44 @@ export const settings = {
                             />
                         </a>
                     )}
-                    {image && (
-                        <figure className="wp-block-cloudblocks-feature-box__image">
-                            <img className="wp-block-cloudblocks-feature-box__image-item" src={image} alt={imageAlt} />
-                            <IconButton
-                                className="wp-block-cloudblocks-feature-box__image-button"
-                                label={__('Remove Image')}
-                                icon="trash"
-                                onClick={onRemoveImage}
-                            />
-                        </figure>
-                    )}
-                    <RichText
-                        placeholder={__('Title')}
-                        tagName={tagName}
-                        className="wp-block-cloudblocks-feature-box__title"
-                        value={content}
-                        isSelected={false}
-                        keepPlaceholderOnFocus={true}
-                        onChange={content => setAttributes({ content })}
-                    />
+                    {backgroundImageId && (
+                        <div className={backgroundClass} style={backgroundImgStyles}>
+                            <div className="wp-block-cloudblocks-feature-box--background-overlay" style={backgroundColorStyles}></div>
 
-                    <div className="wp-block-cloudblocks-feature-box__description">
-                        <InnerBlocks template={TEMPLATE} allowedBlocks={ALLOWED_BLOCKS} />
-                    </div>
+                            <div className="wp-block-cloudblocks-feature-box__background-icon">
+                                <MediaUpload
+                                    type="image"
+                                    onSelect={onSelectBgImage}
+                                    value={backgroundImageId}
+                                    render={({ open }) => (
+                                        <IconButton
+                                            className="components-toolbar__control"
+                                            label={__('Add/Edit background image')}
+                                            icon="edit"
+                                            onClick={open}
+                                        />
+                                    )}
+                                />
+                            </div>
+
+                            {imageBlock}
+
+                            <RichText
+                                placeholder={__('Title')}
+                                tagName={tagName}
+                                className="wp-block-cloudblocks-feature-box__title"
+                                value={content}
+                                isSelected={false}
+                                keepPlaceholderOnFocus={true}
+                                onChange={content => setAttributes({ content })}
+                            />
+
+                            <div className="wp-block-cloudblocks-feature-box__description">
+                                <InnerBlocks template={TEMPLATE} allowedBlocks={ALLOWED_BLOCKS} />
+                            </div>
+
+                        </div>
+                    )}
 
                     {isSelected && (
                         <URLInput value={url} onChange={url => setAttributes({ url })} />
@@ -307,6 +323,14 @@ export const settings = {
                     <AlignmentToolbar value={alignment} onChange={onChangeAlignment} />
                 </BlockControls>
                 <InspectorControls>
+                    <PanelBody title={__('Image Settings')} initialOpen={true}>
+                        <ToggleControl
+                            label="Change image background to cover photo"
+                            help={ hasBackground ? 'Has background image.' : 'Has cover image.' }
+                            checked={ hasBackground }
+                            onChange={ hasBackground => setAttributes({ hasBackground }) }
+                        />
+                    </PanelBody>
                     <PanelColorSettings
                         initialOpen={false}
                         title={__('Background Color')}

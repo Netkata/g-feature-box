@@ -1,14 +1,53 @@
 .wp-block-cloudblocks-feature-box {
-  max-width: 350px;
-  background: none;
+    max-width: 350px;
+    background: none;
+    position: relative;
+    transition: .3s;
+
+    &:hover {
+        .wp-block-cloudblocks-feature-box--background
+        .wp-block-cloudblocks-feature-box__description {
+            height: 100%;
+        }
+    }
+}
+
+.wp-block-cloudblocks-feature-box--background {
+    position: relative;
+    width: 100%;
+    min-height: inherit;
+
+    h2, h3, p {
+        color: #ffffff;
+    }
+
+    .wp-block-cloudblocks-feature-box__description {
+        height: 0;
+    }
+}
+
+.wp-block-cloudblocks-feature-box--background-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.wp-block-cloudblocks-feature-box__background-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 
 .wp-block-cloudblocks-feature-box__image {
     position: relative;
     width: 100%;
-    height: calc( 350px * 9 / 16 );
     background-size: cover;
     display: block;
+    z-index: 0;
 
     .wp-block-cloudblocks-feature-box__image-button {
         position: absolute;
