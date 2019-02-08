@@ -20,6 +20,13 @@ You can get this block through [Cloud Blocks](https://wordpress.org/plugins/clou
 
 ## Changelog
 
+### 0.1.0
+Fix media upload \
+Added switch between a cover image and feature box with image \
+Improved the appearance \
+Change screenshot \
+Reformat code
+
 ### 0.0.5
 Update readme
 
