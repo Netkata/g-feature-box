@@ -17,12 +17,33 @@
     width: 100%;
     min-height: inherit;
 
+    &:before{
+        content: "";
+        display: block;
+        padding-top: calc( 100% - 78px );
+    }
+
     h2, h3, p {
         color: #ffffff;
     }
 
+    .wp-block-cloudblocks-feature-box__content {
+        position: absolute;
+    }
+
+    .wp-block-cloudblocks-feature-box__title {
+        padding: 0 15px;
+    }
+
     .wp-block-cloudblocks-feature-box__description {
         height: 0;
+        p {
+            line-height: 1.5;
+        }
+
+        .wp-block.editor-block-list__block {
+            margin: 0 !important;
+        }
     }
 }
 

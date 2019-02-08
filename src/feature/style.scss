@@ -14,6 +14,12 @@
     min-height: inherit;
     overflow: hidden;
 
+    &:before{
+      content: "";
+      display: block;
+      padding-top: calc( 100% - 78px );
+    }
+
     & > * {
       z-index: 1;
     }
@@ -22,8 +28,19 @@
       .wp-block-cloudblocks-feature-box__description {
         opacity: 1;
         max-height: fit-content;
-        padding-bottom: 30px;
+        padding-bottom: 15px;
       }
+    }
+
+    .wp-block-cloudblocks-feature-box__content {
+      position: absolute;
+    }
+
+    .wp-block-cloudblocks-feature-box__title {
+      color: white;
+      font-weight: bold;
+      line-height: 38px;
+      font-size: 28px;
     }
 
     .wp-block-cloudblocks-feature-box__description {
@@ -32,6 +49,10 @@
       opacity: 0;
       transition: opacity .3s, padding .3s;
       max-height: 0;
+      color: white;
+      font-weight: 500;
+      line-height: 32px;
+      font-size: 18px;
 
       p {
         margin-top: 0;
@@ -70,6 +91,14 @@
 
   .wp-block-cloudblocks-feature-box__image {
     margin: 0 0 20px;
+  }
+
+  .wp-block-cloudblocks-feature-box__text-link {
+    font-weight: bold;
+    line-height: 29px;
+    font-size: 16px;
+    text-decoration-line: underline;
+    margin-top: 15px !important;
   }
 
   img {

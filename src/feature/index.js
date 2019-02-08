@@ -254,20 +254,23 @@ export const settings = {
                                 />
                             </div>
 
-                            {imageBlock}
+                            <div className="wp-block-cloudblocks-feature-box__content">
 
-                            <RichText
-                                placeholder={__('Title')}
-                                tagName={tagName}
-                                className="wp-block-cloudblocks-feature-box__title"
-                                value={content}
-                                isSelected={false}
-                                keepPlaceholderOnFocus={true}
-                                onChange={content => setAttributes({ content })}
-                            />
+                                {imageBlock}
 
-                            <div className="wp-block-cloudblocks-feature-box__description">
-                                <InnerBlocks template={TEMPLATE} allowedBlocks={ALLOWED_BLOCKS} />
+                                <RichText
+                                    placeholder={__('Title')}
+                                    tagName={tagName}
+                                    className="wp-block-cloudblocks-feature-box__title"
+                                    value={content}
+                                    isSelected={false}
+                                    keepPlaceholderOnFocus={true}
+                                    onChange={content => setAttributes({ content })}
+                                />
+
+                                <div className="wp-block-cloudblocks-feature-box__description">
+                                    <InnerBlocks template={TEMPLATE} allowedBlocks={ALLOWED_BLOCKS} />
+                                </div>
                             </div>
 
                         </div>
@@ -427,9 +430,36 @@ export const settings = {
                     <a className="wp-block-cloudblocks-feature-box__link" href={url}>
                         <div className={backgroundClass} style={backgroundImgStyles}>
                             <div className="wp-block-cloudblocks-feature-box--background-overlay" style={backgroundColorStyles}></div>
+                            <div className="wp-block-cloudblocks-feature-box__content">
+                                {!hasBackground && (
+                                    <img className="wp-block-cloudblocks-feature-box__image" src={backgroundImage} alt={backgroundImageAlt} />
+                                )}
 
+                                <RichText.Content
+                                    className="wp-block-cloudblocks-feature-box__title"
+                                    value={content}
+                                    tagName={tagName}
+                                />
+
+                                <div className="wp-block-cloudblocks-feature-box__description">
+                                    <InnerBlocks.Content />
+
+                                    {hasBackground && (
+                                        <p className="wp-block-cloudblocks-feature-box__text-link">{__('Read full story')}</p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                )}
+                {!url && (
+                    <div className={backgroundClass} style={backgroundImgStyles}>
+                        <div className="wp-block-cloudblocks-feature-box--background-overlay" style={backgroundColorStyles}></div>
+                        <div className="wp-block-cloudblocks-feature-box__content">
                             {!hasBackground && (
-                                <img className="wp-block-cloudblocks-feature-box__image" src={backgroundImage} alt={backgroundImageAlt} />
+                                <figure className="wp-block-cloudblocks-feature-box__image">
+                                    <img src={backgroundImage} alt={backgroundImageAlt} />
+                                </figure>
                             )}
 
                             <RichText.Content
@@ -440,33 +470,7 @@ export const settings = {
 
                             <div className="wp-block-cloudblocks-feature-box__description">
                                 <InnerBlocks.Content />
-
-                                {hasBackground && (
-                                    <p className="wp-block-cloudblocks-feature-box__text-link">{__('Read full story')}</p>
-                                )}
                             </div>
-
-                        </div>
-                    </a>
-                )}
-                {!url && (
-                    <div className={backgroundClass} style={backgroundImgStyles}>
-                        <div className="wp-block-cloudblocks-feature-box--background-overlay" style={backgroundColorStyles}></div>
-
-                        {!hasBackground && (
-                            <figure className="wp-block-cloudblocks-feature-box__image">
-                                <img src={backgroundImage} alt={backgroundImageAlt} />
-                            </figure>
-                        )}
-
-                        <RichText.Content
-                            className="wp-block-cloudblocks-feature-box__title"
-                            value={content}
-                            tagName={tagName}
-                        />
-
-                        <div className="wp-block-cloudblocks-feature-box__description">
-                            <InnerBlocks.Content />
                         </div>
                     </div>
                 )}
